@@ -10,7 +10,7 @@ export async function memoriesRoutes(app: FastifyInstance) {
   app.get('/memories', async (request) => {
     const memories = await prisma.memory.findMany({
       where: {
-        userId: request.user.sub,
+        userId: request.user.id,
       },
       orderBy: {
         createdAt: 'asc'
@@ -40,7 +40,7 @@ export async function memoriesRoutes(app: FastifyInstance) {
       },
     })
 
-    if (memory.userId !== request.user.sub) {
+    if (memory.userId !== request.user.id) {
       return reply.status(401).send()
     }
 
@@ -61,7 +61,7 @@ export async function memoriesRoutes(app: FastifyInstance) {
         content,
         coverUrl,
         createdAt,
-        userId: request.user.sub,
+        userId: request.user.id,
       },
     })
 
@@ -88,7 +88,7 @@ export async function memoriesRoutes(app: FastifyInstance) {
       },
     })
 
-    if (memory.userId !== request.user.sub) {
+    if (memory.userId !== request.user.id) {
       return reply.status(401).send()
     }
 
@@ -118,7 +118,7 @@ export async function memoriesRoutes(app: FastifyInstance) {
       },
     })
 
-    if (memory.userId !== request.user.sub) {
+    if (memory.userId !== request.user.id) {
       return reply.status(401).send()
     }
 
