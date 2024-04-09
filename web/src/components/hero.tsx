@@ -89,7 +89,7 @@ export function Hero() {
           </div>
           <div className="flex flex-col gap-4 items-center justify-center">
             <Link
-              className="relative py-3 px-6 rounded-lg border-none cursor-pointer text-slate-100 bg-violet-500 custom-animation"
+              className="relative py-3 px-6 rounded-lg border-none cursor-pointer text-slate-100 bg-violet-500 custom-animation-button"
               href="/memories/new#form"
             >
               Criar nova memória
