@@ -3,7 +3,7 @@
 import { Camera } from "lucide-react";
 import { MediaPicker } from "./media-picker";
 import { FormEvent, useState } from "react";
-import Datepicker, { DateValueType, DatepickerType } from 'react-tailwindcss-datepicker'
+import Datepicker, { DateValueType } from 'react-tailwindcss-datepicker'
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import Cookie from 'js-cookie'
@@ -62,10 +62,6 @@ export function NewMemoryForm() {
       id="form"
     >
       <div className="flex items-center gap-8">
-        {/* <label
-          htmlFor="media"
-          className="flex cursor-pointer items-center gap-1.5 text-sm text-gray-50 hover:text-gray-100"
-        > */}
         <label
           htmlFor="media"
           className="flex cursor-pointer items-center gap-2 p-2.5 text-sm bg-slate-800 text-white/80 border border-slate-600 rounded-lg tracking-wide font-light"
@@ -76,6 +72,7 @@ export function NewMemoryForm() {
         </label>
 
         <Datepicker
+          primaryColor="violet"
           value={value}
           onChange={handleValueChange}
           placeholder="Escolha a data"
@@ -89,14 +86,15 @@ export function NewMemoryForm() {
       <textarea
         name="content" 
         spellCheck={false}
-        className="w-full flex-1 resize-none rounded border-0 bg-transparent p-0 text-lg leading-relaxed text-gray-50 placeholder:text-gray-100 focus:ring-0"
+        className="w-full flex-1 resize-none rounded border-0 bg-transparent p-0 text-lg leading-relaxed text-slate-100 placeholder:text-slate-400 focus:ring-0"
         placeholder="Adicione fotos, vídeos e relatos sobre essa nossa experiência que você quer lembrar para sempre."
       />
 
       <button
         type="submit"
         disabled={loading}
-        className={`inline-block self-end rounded-full bg-blue-300 px-5 py-3 font-alt text-sm uppercase leading-none text-black hover:bg-blue-400 ${loading && 'cursor-not-allowed'}`}
+        // className={`inline-block self-end rounded-full bg-blue-300 px-5 py-3 font-alt text-sm uppercase leading-none text-black hover:bg-blue-400 ${loading && 'cursor-not-allowed'}`}
+        className={`relative py-3 px-6 rounded-lg border-none cursor-pointer text-slate-100 bg-violet-500 custom-animation-button ${loading && 'cursor-not-allowed'}`}
       >
         Salvar
       </button>

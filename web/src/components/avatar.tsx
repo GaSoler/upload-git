@@ -6,7 +6,7 @@ interface AvatarProps {
   id: string,
   name: string,
   avatarUrl: string
-  loggedUser: boolean
+  loggedUser: boolean | null
 }
 
 export function Avatar({ avatarUrl, id, name, loggedUser }: AvatarProps) {

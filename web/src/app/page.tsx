@@ -19,12 +19,12 @@ interface Memory {
 
 export default async function Home() {
   const isLoged = cookies().has('user_data')
+  const token = cookies().get('user_data')?.value
 
   if (!isLoged) {
     return <InConstruction />
   }
 
-  const token = cookies().get('user_data')?.value
 
   const response = await api.get('/memories', {
     headers: {
@@ -43,7 +43,7 @@ export default async function Home() {
       {memories.map((memory) => {
         return (
           <div key={memory.id} className="space-y-4">
-            <time className="-ml-8 flex items-center gap-2 text-sm text-gray-100 before:h-px before:w-5 before:bg-gray-50">
+            <time className="-ml-8 flex items-center gap-2 text-sm text-slate-100 before:h-px before:w-5 before:bg-slate-50">
               {dayjs(memory.createdAt).format('D[ de ]MMMM[, ]YYYY')}
             </time>
             <div className="px-4">
@@ -63,12 +63,12 @@ export default async function Home() {
                   className="aspect-video w-full rounded-lg object-contain" // object-scale-down
                 />
               )}
-              <p className="text-lg leading-relaxed text-gray-50">
+              <p className="text-lg leading-relaxed text-slate-50">
                 {memory.excerpt}
               </p>
               <Link
                 href={`/memories/${memory.id}`}
-                className="flex items-center gap-2 text-sm text-gray-100 hover:text-gray-50"
+                className="flex items-center gap-2 text-sm text-slate-100 hover:text-slate-50"
               >
                 Ler mais
                 <ArrowRight className="h-4 w-4" />

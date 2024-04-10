@@ -1,7 +1,6 @@
 export function Loader(){
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <h1>carregando...</h1>
       {/* Loader 1 */}
       {/* <div className="loader">
         <span className="loader-text">loading</span>
@@ -20,7 +19,7 @@ export function Loader(){
         </div>
       </div> */}
       {/* Loader 3 */}
-      {/* <div className="loader"></div> */}
+      <div className="loader"></div>
       {/* Loader 4 */}
       {/* <div className="wrapper">
         <div className="circle"></div>

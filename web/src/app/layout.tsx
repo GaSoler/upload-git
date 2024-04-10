@@ -22,7 +22,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const isAuthenticated = cookies().has('auth_token')
-  const isLogged = cookies().has('user_data')
 
   return (
     <html lang="en">

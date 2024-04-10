@@ -8,6 +8,7 @@ import { Loader } from "./loader";
 export function Authentication() {
   const [code, setCode] = useState("")
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleAuthenticate() {
     try {
@@ -23,6 +24,7 @@ export function Authentication() {
       }
     } catch (error) {
       console.error('Erro ao fazer a autenticação', error)
+      setError("Erro ao autenticar. Verifique o código e tente novamente.")
     } finally {
       setLoading(false)
     }
@@ -36,7 +38,7 @@ export function Authentication() {
     <div className="mx-auto max-w-[420px] space-y-5 text-center lg:mx-0 lg:text-left">
       <div className="space-y-1">
         <h1 className="text-5xl font-bold leading-tight">Para acessar digite nosso segredo!</h1>
-        <p className="text-lg leading-relaxed">dica: é uma data importante</p>
+        <p className="text-lg leading-relaxed text-slate-400">dica: é uma data importante</p>
       </div>
       {loading && <div><Loader /></div>}
       <div className="flex items-center box-border border border-transparent rounded-lg focus-within:border-violet-500">
@@ -55,6 +57,7 @@ export function Authentication() {
           <ArrowRight size={16} />
         </button>
       </div>
+      {error && <span className="text-red-400 text-sm">{error}</span>}
     </div>
   )
 }

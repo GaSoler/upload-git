@@ -6,6 +6,7 @@ import Cookie from 'js-cookie'
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
+import { Loader } from "./loader";
 
 interface User {
   id: string
@@ -13,40 +14,54 @@ interface User {
   avatarUrl: string
 }
 
-interface UserCookies {
+interface JwtPayload {
   sub: string
   name: string
   avatarUrl: string
 }
-let user_cookie: UserCookies | undefined;
-const isLogged = Cookie.get('user_data');
-if (isLogged !== undefined) {
-    const user_cookie:User = jwtDecode(isLogged);
-    console.log(user_cookie);
-}
 
 export function Hero() {
   const [users, setUsers] = useState<User[]>([])
+  const [loading, setLoading] = useState(false);
+  const [loggedUser, setLoggedUser] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        setLoading(true);
         const response = await api.get('/users')
         const fetchedUsers = response.data
         setUsers(fetchedUsers)
       } catch (error) {
         console.error('Erro ao buscar lista de usuários:', error)
+      } finally {
+        setLoading(false)
       }
     }
 
     fetchUsers()
-  }, [isLogged])
+
+    const isLogged = Cookie.get('user_data');
+    if (isLogged !== undefined) {
+      const user_cookie: JwtPayload = jwtDecode(isLogged);
+      const user: User = {
+        id: user_cookie.sub,
+        name: user_cookie.name,
+        avatarUrl: user_cookie.avatarUrl
+      };
+        setLoggedUser(user);
+    }
+  }, [])
+
+  if(loading){
+    return <Loader />;
+  }
   
   return (
     <div className="mx-auto max-w-[420px] space-y-5 text-center lg:mx-0 lg:text-left">
       {/* Text Info */}
       <div className="space-y-1">
-        {isLogged ? (
+        {loggedUser ? (
           <>
             <h1 className="text-5xl font-bold leading-tight text-slate-100">
               Ei psiu...
@@ -75,16 +90,16 @@ export function Hero() {
             avatarUrl={user.avatarUrl}
             id={user.id}
             name={user.name}
-            loggedUser={user_cookie?.sub === user.id}
+            loggedUser={loggedUser && loggedUser.id === user.id}
           />
         ))}
       </div>
       {/* Logged User */}
-      {isLogged ? (
+      {loggedUser ? (
         <>
           <div className="flex flex-col items-center justify-center gap-1">
             <h1 className="text-center text-4xl">
-              Cápsula do tempo de <b>{user_cookie?.name}</b>
+              Cápsula do tempo de <b>{loggedUser.name}</b>
             </h1>
           </div>
           <div className="flex flex-col gap-4 items-center justify-center">
