@@ -15,10 +15,10 @@ const app = fastify()
 
 app.register(multipart)
 
-app.register(require('@fastify/static'), {
-  root: resolve(__dirname, '../uploads'),
-  prefix: '/uploads',
-})
+// app.register(require('@fastify/static'), {
+//   root: resolve(__dirname, '../uploads'),
+//   prefix: '/uploads',
+// })
 
 app.register(cors, {
   origin: true,
