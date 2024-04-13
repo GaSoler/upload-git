@@ -22,7 +22,7 @@ export async function authRoutes(app: FastifyInstance) {
 
   app.post('/login', async (request, reply) => {
     const userSchema = z.object({
-      sub: z.string(),
+      id: z.string(),
       name: z.string(),
       avatar_url: z.string().url(),
     })
@@ -31,7 +31,7 @@ export async function authRoutes(app: FastifyInstance) {
 
     let user = await prisma.user.findUnique({
       where: {
-        id: userInfo.sub,
+        id: userInfo.id,
       },
     })
 
