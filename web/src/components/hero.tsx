@@ -4,15 +4,9 @@ import { Avatar } from "./avatar";
 import { api } from "@/lib/api";
 import Cookie from 'js-cookie'
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
 import { Loader } from "./loader";
-
-interface User {
-  id: string
-  name: string
-  avatarUrl: string
-}
+import { User, getUser } from "@/lib/getUserData";
 
 interface JwtPayload {
   sub: string
@@ -30,8 +24,12 @@ export function Hero() {
       try {
         setLoading(true);
         const response = await api.get('/users')
-        const fetchedUsers = response.data
-        setUsers(fetchedUsers)
+        setUsers(response.data)
+
+        const user = getUser();
+        if (user) {
+          setLoggedUser(user);
+        }
       } catch (error) {
         console.error('Erro ao buscar lista de usuários:', error)
       } finally {
@@ -41,16 +39,16 @@ export function Hero() {
 
     fetchUsers()
 
-    const isLogged = Cookie.get('user_data');
-    if (isLogged !== undefined) {
-      const user_cookie: JwtPayload = jwtDecode(isLogged);
-      const user: User = {
-        id: user_cookie.sub,
-        name: user_cookie.name,
-        avatarUrl: user_cookie.avatarUrl
-      };
-        setLoggedUser(user);
-    }
+    // const isLogged = Cookie.get('user_data');
+    // if (isLogged !== undefined) {
+    //   const user_cookie: JwtPayload = jwtDecode(isLogged);
+    //   const user: User = {
+    //     id: user_cookie.sub,
+    //     name: user_cookie.name,
+    //     avatarUrl: user_cookie.avatarUrl
+    //   };
+    //     setLoggedUser(user);
+    // }
   }, [])
 
   if(loading){

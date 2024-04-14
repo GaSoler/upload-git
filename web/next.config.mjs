@@ -4,7 +4,8 @@ const nextConfig = {
     domains: [
       'avatars.githubusercontent.com',
       'github.com',
-      'localhost'
+      'i.ibb.co',
+      // '@API_IP'
     ]
   }
 };

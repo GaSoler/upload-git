@@ -7,10 +7,12 @@ import Datepicker, { DateValueType } from 'react-tailwindcss-datepicker'
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import Cookie from 'js-cookie'
+import { getUser } from "@/lib/getUserData";
 
 export function NewMemoryForm() {
   const [loading, setLoading] = useState(false)
   const [value, setValue] = useState<DateValueType>({ startDate: new Date(), endDate: new Date() });
+  const user = getUser()
 
   const router = useRouter()
 
@@ -34,20 +36,22 @@ export function NewMemoryForm() {
 
     const token = Cookie.get('user_data')
 
-    await api.post(
-      '/memories',
-      {
-        coverUrl,
-        content: formData.get('content'),
-        createdAt: value?.startDate,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+    if(user) {
+      await api.post(
+        '/memories',
+        {
+          coverUrl,
+          content: formData.get('content'),
+          createdAt: value?.startDate,
+          id: user.id,
         },
-      },
-    )
-
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+    }
     router.push('/')
   }
 

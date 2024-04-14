@@ -7,6 +7,7 @@ import { ArrowRight } from "lucide-react";
 import { cookies } from "next/headers";
 import { api } from "@/lib/api";
 import { InConstruction } from "@/components/in-construction";
+import { getUser } from "@/lib/getUserData";
 
 dayjs.locale(ptBR)
 
@@ -20,17 +21,23 @@ interface Memory {
 export default async function Home() {
   const isLoged = cookies().has('user_data')
   const token = cookies().get('user_data')?.value
+  const user = getUser()
 
   if (!isLoged) {
     return <InConstruction />
   }
 
 
-  const response = await api.get('/memories', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    }
-  })
+  const response = await api.get(
+    '/memories',
+    {
+      params: {
+        id: user?.id,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
 
   const memories: Memory[] = response.data;
 
