@@ -16,14 +16,12 @@ export function Authentication() {
       const response = await api.post('/authenticate', {
         code,
       })
-      console.log(response)
       if (response.status == 200) {
         const { token } = response.data
         Cookie.set('auth_token', token, { expires: 7, path: '/' })
         window.location.href = `/`
       }
     } catch (error) {
-      console.error('Erro ao fazer a autenticação', error)
       setError("Erro ao autenticar. Verifique o código e tente novamente.")
     } finally {
       setLoading(false)

@@ -39,6 +39,7 @@ export default function RootLayout({
 
             
             {isAuthenticated ? <Hero /> : <Authentication />}
+            
           </div>
 
           {/* Right */}
