@@ -7,6 +7,7 @@ import Datepicker, { DateValueType } from 'react-tailwindcss-datepicker'
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import Cookie from 'js-cookie'
+import { Loader } from "./loader";
 
 export function NewMemoryForm() {
   const [loading, setLoading] = useState(false)
@@ -16,39 +17,41 @@ export function NewMemoryForm() {
 
   async function handleCreateMemory(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    setLoading(true)
 
-    const formData = new FormData(event.currentTarget)
+    try {
+      const formData = new FormData(event.currentTarget)
+      const fileToUpload = formData.get('coverUrl')
+      let coverUrl = ''
 
-    const fileToUpload = formData.get('coverUrl')
+      if (fileToUpload) {
+        const uploadFormData = new FormData()
+        uploadFormData.set('file', fileToUpload)
+        const uploadResponse = await api.post('/upload', uploadFormData)
+        coverUrl = uploadResponse.data.fileUrl
+      }
 
-    let coverUrl = ''
-
-    if (fileToUpload) {
-      const uploadFormData = new FormData()
-      uploadFormData.set('file', fileToUpload)
-
-      const uploadResponse = await api.post('/upload', uploadFormData)
-
-      coverUrl = uploadResponse.data.fileUrl
-    }
-
-    const token = Cookie.get('user_data')
-
-    await api.post(
-      '/memories',
-      {
-        coverUrl,
-        content: formData.get('content'),
-        createdAt: value?.startDate,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const token = Cookie.get('user_data')
+      await api.post(
+        '/memories',
+        {
+          coverUrl,
+          content: formData.get('content'),
+          createdAt: value?.startDate,
         },
-      },
-    )
-    
-    router.push('/')
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+
+      router.push('/')
+    } catch (error) {
+      console.error('Erro ao criar memória:', error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   const handleValueChange = (newValue: DateValueType): void => {
@@ -61,6 +64,7 @@ export function NewMemoryForm() {
       className="flex flex-1 flex-col gap-2"
       id="form"
     >
+      {loading && <div><Loader /></div>}
       <div className="flex items-center gap-8">
         <label
           htmlFor="media"

@@ -45,7 +45,7 @@ export async function login(avatarUrl: string, id: string, name: string){
     const response = await api.post('/login', {
       id,
       name,
-      avatar_url: avatarUrl,
+      avatarUrl,
     })
     if (response.status == 200) {
       const { token } = response.data
