@@ -1,9 +1,8 @@
 'use client'
-import { api } from "@/lib/api";
 import { ArrowRight } from "lucide-react";
 import { ChangeEvent, useState } from "react";
-import Cookie from 'js-cookie'
 import { Loader } from "./loader";
+import { authenticate } from "@/lib/actions";
 
 export function Authentication() {
   const [code, setCode] = useState("")
@@ -13,14 +12,7 @@ export function Authentication() {
   async function handleAuthenticate() {
     try {
       setLoading(true);
-      const response = await api.post('/authenticate', {
-        code,
-      })
-      if (response.status == 200) {
-        const { token } = response.data
-        Cookie.set('auth_token', token, { expires: 7, path: '/' })
-        window.location.href = `/`
-      }
+      await authenticate(code);
     } catch (error) {
       setError("Erro ao autenticar. Verifique o código e tente novamente.")
     } finally {

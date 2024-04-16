@@ -6,7 +6,8 @@ import Cookie from 'js-cookie'
 import Link from "next/link";
 import { jwtDecode } from "jwt-decode";
 import { Loader } from "./loader";
-import { User, getUser } from "@/lib/getUserData";
+import { User, getUser } from "@/lib/actions";
+import { getUsers } from "@/lib/actions";
 
 interface JwtPayload {
   sub: string
@@ -23,10 +24,10 @@ export function Hero() {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const response = await api.get('/users')
-        setUsers(response.data)
+        const usersData = await getUsers()
+        setUsers(usersData)
 
-        const user = getUser();
+        const user: User | null = getUser();
         if (user) {
           setLoggedUser(user);
         }
@@ -38,17 +39,6 @@ export function Hero() {
     }
 
     fetchUsers()
-
-    // const isLogged = Cookie.get('user_data');
-    // if (isLogged !== undefined) {
-    //   const user_cookie: JwtPayload = jwtDecode(isLogged);
-    //   const user: User = {
-    //     id: user_cookie.sub,
-    //     name: user_cookie.name,
-    //     avatarUrl: user_cookie.avatarUrl
-    //   };
-    //     setLoggedUser(user);
-    // }
   }, [])
 
   if(loading){

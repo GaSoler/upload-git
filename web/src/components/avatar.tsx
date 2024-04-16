@@ -1,6 +1,7 @@
 import { api } from "@/lib/api"
 import Image from "next/image"
 import Cookie from 'js-cookie'
+import { login } from "@/lib/actions"
 
 interface AvatarProps {
   id: string,
@@ -12,16 +13,7 @@ interface AvatarProps {
 export function Avatar({ avatarUrl, id, name, loggedUser }: AvatarProps) {
   async function handleLogin() {
     try {
-      const response = await api.post('/login', {
-        id,
-        name,
-        avatar_url: avatarUrl,
-      })
-      if (response.status == 200) {
-        const { token } = response.data
-        Cookie.set('user_data', token, { expires: 7, path: '/' })
-        window.location.href = '/'
-      }
+      await login(avatarUrl, id, name)
     } catch (error) {
       console.error('Erro ao fazer login', error)
     }
