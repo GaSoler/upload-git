@@ -7,8 +7,6 @@ import { ArrowRight } from "lucide-react";
 import { cookies } from "next/headers";
 import { api } from "@/lib/api";
 import { InConstruction } from "@/components/in-construction";
-import { User, getUser } from "@/lib/actions";
-
 
 dayjs.locale(ptBR)
 
@@ -22,7 +20,6 @@ interface Memory {
 export default async function Home() {
   const isLoged = cookies().has('user_data')
   const token = cookies().get('user_data')?.value
-  const user: User | null = getUser();
 
   if (!isLoged) {
     return <InConstruction />
@@ -73,7 +70,7 @@ export default async function Home() {
               </p>
               <Link
                 href={`/memories/${memory.id}`}
-                className="flex items-center gap-2 text-sm text-slate-100 hover:text-slate-50"
+                className="flex items-center gap-2 text-sm text-slate-100 hover:text-slate-300"
               >
                 Ler mais
                 <ArrowRight className="h-4 w-4" />
