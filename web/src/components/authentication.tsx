@@ -33,7 +33,7 @@ export function Authentication() {
       {loading && <div><Loader /></div>}
       <div className="flex items-center box-border border border-transparent rounded-lg focus-within:border-violet-500">
         <input 
-          type="text" 
+          type="password" 
           placeholder="Digite aqui!"
           value={code}
           onChange={handleInputChange}
