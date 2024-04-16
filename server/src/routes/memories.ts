@@ -8,14 +8,9 @@ export async function memoriesRoutes(app: FastifyInstance) {
   })
 
   app.get('/memories', async (request) => {
-    const querySchema  = z.object({
-      id: z.string(),
-    })
-    const { id } = querySchema.parse(request.query)
-
     const memories = await prisma.memory.findMany({
       where: {
-        userId: id,
+        userId: request.user.id,
       },
       orderBy: {
         createdAt: 'asc'
