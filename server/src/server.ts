@@ -15,17 +15,17 @@ const app = fastify()
 
 app.register(multipart)
 
-// app.register(require('@fastify/static'), {
-//   root: resolve(__dirname, '../uploads'),
-//   prefix: '/uploads',
-// })
-
 app.register(cors, {
   origin: true,
 })
 
+if (!process.env.JWT_SECRET) {
+  console.error('JWT_SECRET is not defined in the environment variables.')
+  process.exit(1)
+}
+
 app.register(jwt, {
-  secret: 'spacetime',
+  secret: process.env.JWT_SECRET,
 })
 
 app.register(usersRoutes)
